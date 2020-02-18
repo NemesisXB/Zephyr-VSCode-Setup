@@ -7,21 +7,6 @@ Setup guide for Zephyr in VS Code
 [Ubuntu Update Device Tree Compiler(DTC)](https://lists.zephyrproject.org/g/users/topic/dtc_version_unsupported_error/32325016?p=,,,20,0,0,0::recentpostdate%2Fsticky,,,20,2,0,32325016)\
 [Fix OpenOCD gdb-attach Error](https://mcuoneclipse.com/2016/04/09/solution-for-openocd-cannot-communicate-target-not-haltet/)
 
-## Cmakelsits changes
-Add **set(CMAKE_EXPORT_COMPILE_COMMANDS_ON)** to CMakeLists.txt in the project root
-
-CMakeLists.txt
-```
-# SPDX-License-Identifier: Apache-2.0
-
-cmake_minimum_required(VERSION 3.13.1)
-include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
-project(blinky)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-target_sources(app PRIVATE src/main.c)
-```
-
 ## Example vscode files
 launch.json
 ```json
@@ -87,6 +72,37 @@ tasks.json
             }
         },
         {
+            "label": "Build Verbose",
+            "type": "shell",
+            "command": "west",
+            "args": [
+                "-v",
+                "build",
+                "-b nucleo_f401re",
+                "--force",
+                "--",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+            ],
+            "options": 
+            {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "ZEPHYR_TOOLCHAIN_VARIANT": "zephyr",
+                    "ZEPHYR_SDK_INSTALL_DIR": "${env:HOME}/zephyr-sdk"
+                }
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": [
+                    "absolute"
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
             "label": "Clean",
             "type": "shell",
             "command": "west",
@@ -123,7 +139,6 @@ tasks.json
 ```
 
 c_cpp_properties.json
-tasks.json
 ```json
 {
     "configurations": [
