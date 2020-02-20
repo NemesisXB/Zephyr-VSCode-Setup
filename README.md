@@ -97,10 +97,7 @@ tasks.json
                     "absolute"
                 ]
             },
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            }
+            "group": "build"
         },
         {
             "label": "Clean",
@@ -121,18 +118,34 @@ tasks.json
                     "ZEPHYR_SDK_INSTALL_DIR": "${env:HOME}/zephyr-sdk"
                 }
             },
+            "group": "build"
+        },
+        {
+            "label": "Flash",
+            "dependsOn": [
+				"Build"
+			],
+            "type": "shell",
+            "command": "west",
+            "args": [
+                "flash"
+            ],
+            "options": 
+            {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "ZEPHYR_TOOLCHAIN_VARIANT": "zephyr",
+                    "ZEPHYR_SDK_INSTALL_DIR": "${env:HOME}/zephyr-sdk"
+                }
+            },
             "problemMatcher": {
                 "base": "$gcc",
                 "fileLocation": [
                     "absolute"
                 ]
             },
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            }
-        }
-
+            "group": "build"
+        },
     ]
 }
 
@@ -159,3 +172,11 @@ c_cpp_properties.json
 }
 
 ```
+## Add tasks to VS Code Taskbar
+Install VS Code plugin: **actboy168.tasks**:\
+Name: Tasks\
+Id: actboy168.tasks\
+Description: Load VSCode Tasks into Status Bar.\
+Version: 0.3.6\
+Publisher: actboy168\
+[VS Marketplace Link](https://marketplace.visualstudio.com/items?itemName=actboy168.tasks)
