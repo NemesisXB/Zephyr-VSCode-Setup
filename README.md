@@ -44,12 +44,31 @@ tasks.json
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "SetEnv",
+            "type": "shell",
+            "command": "west",
+            "args": [
+                "config",
+                "zephyr.base","${env:HOME}/zephyr/stm32f401_test/zephyr"
+            ],
+            "options": {
+                "statusbar": {
+                  "hide" : true
+                }
+              },
+            "group": "test"
+        },
+        {
             "label": "Build",
+            "dependsOn": [
+				"SetEnv"
+			],
             "type": "shell",
             "command": "west",
             "args": [
                 "build",
-                "-b nucleo_f401re",
+                "-p","auto",
+                "-b","nucleo_f401re",
                 "--force"
             ],
             "options": 
@@ -73,12 +92,16 @@ tasks.json
         },
         {
             "label": "Build Verbose",
+            "dependsOn": [
+				"SetEnv"
+			],
             "type": "shell",
             "command": "west",
             "args": [
                 "-v",
                 "build",
-                "-b nucleo_f401re",
+                "-p","auto",
+                "-b","nucleo_f401re",
                 "--force",
                 "--",
                 "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
@@ -101,13 +124,16 @@ tasks.json
         },
         {
             "label": "Clean",
+            "dependsOn": [
+				"SetEnv"
+			],
             "type": "shell",
             "command": "west",
             "args": [
                 "build",
-                "-b nucleo_f401re",
-                "-t",
-                "clean",
+                "-p","auto",
+                "-b","nucleo_f401re",
+                "-t","clean",
                 "--force"
             ],
             "options": 
@@ -144,7 +170,7 @@ tasks.json
                     "absolute"
                 ]
             },
-            "group": "build"
+            "group": "build",
         },
     ]
 }
